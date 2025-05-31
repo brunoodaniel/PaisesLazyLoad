@@ -57,7 +57,10 @@ class _CountriesScreenState extends State<CountriesScreen> {
     } catch (e) {
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao carregar países: $e')),
+        SnackBar(
+          content: Text('Error loading countries: $e'),
+          backgroundColor: Colors.redAccent,
+        ),
       );
     }
   }
@@ -66,27 +69,65 @@ class _CountriesScreenState extends State<CountriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Países'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: _countries.length + (_hasMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index < _countries.length) {
-                  return CountryCard(
-                    country: _countries[index],
-                    onTap: () => _navigateToDetail(context, _countries[index]),
-                  );
-                } else {
-                  return _buildProgressIndicator();
-                }
-              },
+        title: const Text(
+          'Países do Mundo',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            shadows: [
+              Shadow(
+                blurRadius: 2.0,
+                color: Colors.black26,
+                
+          )],
+          ),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.fromARGB(255, 77, 102, 241),
+                Color.fromARGB(255, 77, 102, 241),
+              ],
             ),
           ),
-        ],
+        ),
+        elevation: 10,
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFF5F7FA),
+              Color(0xFFE4E7EB),
+            ],
+          ),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _countries.length + (_hasMore ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index < _countries.length) {
+                    return CountryCard(
+                      country: _countries[index],
+                      onTap: () => _navigateToDetail(context, _countries[index]),
+                    );
+                  } else {
+                    return _buildProgressIndicator();
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -96,8 +137,16 @@ class _CountriesScreenState extends State<CountriesScreen> {
       padding: const EdgeInsets.all(16.0),
       child: Center(
         child: _isLoading 
-            ? const CircularProgressIndicator()
-            : const Text('No more countries to load'),
+            ? const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1A2980)),
+              )
+            : const Text(
+                'Todos os países carregados',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
       ),
     );
   }
