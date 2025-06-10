@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/countries_screen.dart';
+import 'services/countries_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'World Countries',
+      title: 'Países do Mundo!',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,

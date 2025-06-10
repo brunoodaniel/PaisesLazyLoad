@@ -46,33 +46,31 @@ class CountryDetailScreen extends StatelessWidget {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Center(
-                child: Card(
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Image.network(
-                      country.flag,
-                      width: 250,
-                      height: 150,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => 
-                        Container(
-                          width: 250,
-                          height: 150,
-                          color: Colors.blueGrey,
-                          child: const Icon(
-                            Icons.flag,
-                            size: 60,
-                            color: Colors.white,
-                          ),
+              Card(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.network(
+                    country.flag,
+                    width: 250,
+                    height: 150,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => 
+                      Container(
+                        width: 250,
+                        height: 150,
+                        color: Colors.blueGrey,
+                        child: const Icon(
+                          Icons.flag,
+                          size: 60,
+                          color: Colors.white,
                         ),
-                    ),
+                      ),
                   ),
                 ),
               ),
@@ -85,7 +83,7 @@ class CountryDetailScreen extends StatelessWidget {
               _buildDetailCard(
                 icon: Icons.public,
                 label: 'Região',
-                value: '${country.region} (${country.subregion})',
+                value: country.region,
               ),
               _buildDetailCard(
                 icon: Icons.people,
@@ -93,22 +91,10 @@ class CountryDetailScreen extends StatelessWidget {
                 value: '${country.population.toString()} habitantes',
               ),
               _buildDetailCard(
-                icon: Icons.language,
-                label: 'Línguas',
-                value: country.languages.join(', '),
-              ),
-              _buildDetailCard(
                 icon: Icons.monetization_on,
-                label: 'Moedas',
-                value: country.currencies.join(', '),
+                label: 'Moeda',
+                value: country.currency,
               ),
-              if (country.latlng != null && country.latlng!.length == 2)
-                _buildDetailCard(
-                  icon: Icons.map,
-                  label: 'Coordenadas',
-                  value: 'Lat: ${country.latlng![0]}, Lng: ${country.latlng![1]}',
-                ),
-              const SizedBox(height: 20),
             ],
           ),
         ),

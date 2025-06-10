@@ -4,10 +4,7 @@ class Country {
   final String capital;
   final int population;
   final String region;
-  final String subregion;
-  final List<String> languages;
-  final List<String> currencies;
-  final List<double>? latlng;
+  final String currency;
 
   Country({
     required this.name,
@@ -15,23 +12,37 @@ class Country {
     required this.capital,
     required this.population,
     required this.region,
-    required this.subregion,
-    required this.languages,
-    required this.currencies,
-    this.latlng,
+    required this.currency,
   });
 
   factory Country.fromJson(Map<String, dynamic> json) {
+    String getCurrencyName(Map<String, dynamic>? currencies) {
+      if (currencies == null || currencies.isEmpty) return 'N/A';
+      final firstKey = currencies.keys.first;
+      return currencies[firstKey]['name']?.toString() ?? 'N/A';
+    }
+
+    String getCapital(dynamic capitalData) {
+      if (capitalData is List && capitalData.isNotEmpty) {
+        return capitalData.first?.toString() ?? 'N/A';
+      }
+      return 'N/A';
+    }
+
+    String getFlag(Map<String, dynamic>? flags) {
+      if (flags == null) return '';
+      return flags['png']?.toString() ?? flags['svg']?.toString() ?? '';
+    }
+
     return Country(
-      name: json['name']['common'] ?? 'Unknown',
-      flag: json['flags']['png'] ?? '',
-      capital: (json['capital'] as List?)?.first ?? 'N/A',
-      population: json['population'] ?? 0,
-      region: json['region'] ?? 'N/A',
-      subregion: json['subregion'] ?? 'N/A',
-      languages: (json['languages'] as Map?)?.values.cast<String>().toList() ?? [],
-      currencies: (json['currencies'] as Map?)?.values.map((v) => v['name'].toString()).toList() ?? [],
-      latlng: (json['latlng'] as List?)?.cast<double>(),
+      name: json['name']?['common']?.toString() ?? 'Desconhecido',
+      flag: getFlag(json['flags']),
+      capital: getCapital(json['capital']),
+      population: json['population'] is int ? json['population'] : 0,
+      region: json['region']?.toString() ?? 'N/A',
+      currency: getCurrencyName(json['currencies'] != null 
+          ? Map<String, dynamic>.from(json['currencies']) 
+          : null),
     );
   }
 }
